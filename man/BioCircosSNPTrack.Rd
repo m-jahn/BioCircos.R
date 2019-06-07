@@ -6,7 +6,7 @@
 \usage{
 BioCircosSNPTrack(trackname, chromosomes, positions, values,
   colors = "#40B9D4", labels = "", size = 2, shape = "circle",
-  maxRadius = 0.9, minRadius = 0.5, range = 0, ...)
+  opacities = 1, maxRadius = 0.9, minRadius = 0.5, range = 0, ...)
 }
 \arguments{
 \item{trackname}{The name of the new track.}
@@ -30,9 +30,11 @@ format or base R colors. If the vector is shorter than the number of points, val
 
 \item{shape}{Shape of the points. Can be "circle" or "rect".}
 
+\item{opacities}{One or multiple opacity values for the points, between 0 and 1.}
+
 \item{minRadius, maxRadius}{Where the track should begin and end, in proportion of the inner radius of the plot.}
 
-\item{range}{a vector of the values to be mapped to the minimum and maximum radii of the track.
+\item{range}{Vector of values to be mapped to the minimum and maximum radii of the track.
 Default to 0, mapping the minimal and maximal values input in the values parameter.}
 
 \item{...}{Ignored}

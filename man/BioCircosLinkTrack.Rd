@@ -5,11 +5,11 @@
 \title{Create an inner track with links to be added to a BioCircos tracklist}
 \usage{
 BioCircosLinkTrack(trackname, gene1Chromosomes, gene1Starts, gene1Ends,
-  gene2Chromosomes, gene2Starts, gene2Ends, color = "#40B9D4", labels = "",
-  maxRadius = 0.4, width = "0.1em", gene1Names = "", gene2Names = "",
-  displayAxis = TRUE, axisColor = "#B8B8B8", axisWidth = 0.5,
-  axisPadding = 0, displayLabel = TRUE, labelColor = "#000000",
-  labelSize = "1em", labelPadding = 3, ...)
+  gene2Chromosomes, gene2Starts, gene2Ends, color = "#40B9D4",
+  labels = "", maxRadius = 0.4, width = "0.1em", gene1Names = "",
+  gene2Names = "", displayAxis = TRUE, axisColor = "#B8B8B8",
+  axisWidth = 0.5, axisPadding = 0, displayLabel = TRUE,
+  labelColor = "#000000", labelSize = "1em", labelPadding = 3, ...)
 }
 \arguments{
 \item{trackname}{The name of the new track.}

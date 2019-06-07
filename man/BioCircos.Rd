@@ -4,37 +4,79 @@
 \alias{BioCircos}
 \title{BioCircos}
 \usage{
-BioCircos(tracklist = BioCircosTracklist(), genome = "hg19", yChr = TRUE,
-  genomeFillColor = "Spectral", chrPad = 0.04, displayGenomeBorder = TRUE,
-  genomeBorderColor = "#000", genomeBorderSize = 0.5,
-  genomeTicksDisplay = TRUE, genomeTicksLen = 5,
-  genomeTicksColor = "#000", genomeTicksTextSize = "0.6em",
-  genomeTicksTextColor = "#000", genomeTicksScale = 3e+07,
-  genomeLabelDisplay = TRUE, genomeLabelTextSize = "10pt",
-  genomeLabelTextColor = "#000", genomeLabelDx = 0.028,
-  genomeLabelDy = "-0.55em", zoom = TRUE, TEXTModuleDragEvent = FALSE,
+BioCircos(tracklist = BioCircosTracklist(), genome = "hg19",
+  yChr = TRUE, genomeFillColor = "Spectral", chrPad = 0.04,
+  displayGenomeBorder = TRUE, genomeBorderColor = "#000",
+  genomeBorderSize = 0.5, genomeTicksDisplay = TRUE,
+  genomeTicksLen = 5, genomeTicksColor = "#000",
+  genomeTicksTextSize = "0.6em", genomeTicksTextColor = "#000",
+  genomeTicksScale = 3e+07, genomeLabelDisplay = TRUE,
+  genomeLabelTextSize = "10pt", genomeLabelTextColor = "#000",
+  genomeLabelDx = 0, genomeLabelDy = 10, genomeLabelOrientation = 0,
+  zoom = TRUE, TEXTModuleDragEvent = FALSE,
   SNPMouseOverDisplay = TRUE, SNPMouseOverColor = "#FF0000",
   SNPMouseOverCircleSize = 3, SNPMouseOverCircleOpacity = 0.9,
   SNPMouseOutDisplay = TRUE, SNPMouseOutColor = "none",
   SNPMouseOverTooltipsHtml01 = "Chromosome: ",
   SNPMouseOverTooltipsHtml02 = "<br/>Position: ",
   SNPMouseOverTooltipsHtml03 = "<br/>Value: ",
-  SNPMouseOverTooltipsHtml04 = "<br/>", SNPMouseOverTooltipsHtml05 = "",
+  SNPMouseOverTooltipsHtml04 = "<br/>",
+  SNPMouseOverTooltipsHtml05 = "",
   SNPMouseOverTooltipsBorderWidth = "1px", ARCMouseOverDisplay = TRUE,
   ARCMouseOverColor = "#FF0000", ARCMouseOverArcOpacity = 0.9,
   ARCMouseOutDisplay = TRUE, ARCMouseOutColor = "none",
   ARCMouseOverTooltipsHtml01 = "Chromosome: ",
   ARCMouseOverTooltipsHtml02 = "<br/>Start: ",
   ARCMouseOverTooltipsHtml03 = "<br/>End: ",
-  ARCMouseOverTooltipsHtml04 = "<br/>", ARCMouseOverTooltipsHtml05 = "",
+  ARCMouseOverTooltipsHtml04 = "<br/>",
+  ARCMouseOverTooltipsHtml05 = "",
   ARCMouseOverTooltipsBorderWidth = "1px", LINKMouseOverDisplay = TRUE,
   LINKMouseOverStrokeColor = "#FF00FF", LINKMouseOverOpacity = 0.9,
   LINKMouseOutDisplay = TRUE, LINKMouseOutStrokeColor = "none",
   LINKMouseOverTooltipsHtml01 = "Fusion: ",
   LINKMouseOverTooltipsHtml02 = "",
-  LINKMouseOverTooltipsBorderWidth = "1px", LINKMouseOverStrokeWidth = 5,
-  LINKMouseOutStrokeWidth = "none", width = NULL, height = NULL,
-  elementId = NULL, ...)
+  LINKMouseOverTooltipsBorderWidth = "1px",
+  LINKMouseOverStrokeWidth = 5, LINKMouseOutStrokeWidth = "none",
+  BARMouseOutDisplay = TRUE, BARMouseOutColor = "none",
+  BARMouseOverDisplay = TRUE, BARMouseOverColor = "#FF0000",
+  BARMouseOverOpacity = 0.9,
+  BARMouseOverTooltipsHtml01 = "Chromosome: ",
+  BARMouseOverTooltipsHtml02 = "<br/>Start: ",
+  BARMouseOverTooltipsHtml03 = " End: ",
+  BARMouseOverTooltipsHtml04 = "<br/>",
+  BARMouseOverTooltipsHtml05 = "<br/>Value: ",
+  BARMouseOverTooltipsHtml06 = "",
+  BARMouseOverTooltipsBorderWidth = "1px",
+  HEATMAPMouseOutDisplay = TRUE, HEATMAPMouseOutColor = "none",
+  HEATMAPMouseOverDisplay = TRUE, HEATMAPMouseOverColor = "#FF0000",
+  HEATMAPMouseOverOpacity = 0.9,
+  HEATMAPMouseOverTooltipsHtml01 = "Chromosome: ",
+  HEATMAPMouseOverTooltipsHtml02 = "<br/>Start: ",
+  HEATMAPMouseOverTooltipsHtml03 = " End: ",
+  HEATMAPMouseOverTooltipsHtml04 = "<br/>",
+  HEATMAPMouseOverTooltipsHtml05 = "<br/>Value: ",
+  HEATMAPMouseOverTooltipsHtml06 = "",
+  HEATMAPMouseOverTooltipsBorderWidth = "1px",
+  LINEMouseOutDisplay = TRUE, LINEMouseOutLineOpacity = "none",
+  LINEMouseOutLineStrokeColor = "none",
+  LINEMouseOutLineStrokeWidth = "none", LINEMouseOverDisplay = T,
+  LINEMouseOverLineOpacity = 1,
+  LINEMouseOverLineStrokeColor = "#FF0000",
+  LINEMouseOverLineStrokeWidth = "none",
+  LINEMouseOverTooltipsHtml01 = "Line",
+  LINEMouseOverTooltipsBorderWidth = 0, CNVMouseOutDisplay = TRUE,
+  CNVMouseOutColor = "none", CNVMouseOutArcOpacity = 1,
+  CNVMouseOutArcStrokeColor = "none", CNVMouseOutArcStrokeWidth = 0,
+  CNVMouseOverDisplay = TRUE, CNVMouseOverColor = "#FF0000",
+  CNVMouseOverArcOpacity = 0.9, CNVMouseOverArcStrokeColor = "#F26223",
+  CNVMouseOverArcStrokeWidth = 3,
+  CNVMouseOverTooltipsHtml01 = "Chromosome: ",
+  CNVMouseOverTooltipsHtml02 = "<br>Start: ",
+  CNVMouseOverTooltipsHtml03 = "<br>End: ",
+  CNVMouseOverTooltipsHtml04 = "<br>Value: ",
+  CNVMouseOverTooltipsHtml05 = "",
+  CNVMouseOverTooltipsBorderWidth = "1px", width = NULL,
+  height = NULL, elementId = NULL, ...)
 }
 \arguments{
 \item{tracklist}{A list of tracks to display.}
@@ -56,8 +98,8 @@ If yes specify the color, in RGB hexadecimal format, and the thickness.}
 \item{genomeTicksDisplay, genomeTicksLen, genomeTicksColor, genomeTicksTextSize, genomeTicksTextColor, genomeTicksScale}{Should the refence genome have ticks, of which length, color (in hexadecimal RGB format), with labels in which font
 size and color, and spaced by how many bases?}
 
-\item{genomeLabelDisplay, genomeLabelTextSize, genomeLabelTextColor, genomeLabelDx, genomeLabelDy}{Should the reference genome have labels on each chromosome, in which font size and color? Moreover rotation
-and radius shifts for the label texts can be adde}
+\item{genomeLabelDisplay, genomeLabelTextSize, genomeLabelTextColor, genomeLabelDx, genomeLabelDy, genomeLabelOrientation}{Should the reference genome have labels on each chromosome, in which font size and color? Moreover rotation
+and radius shifts for the label texts can be added, and the angle between the radius and the label changed.}
 
 \item{zoom}{Is zooming and moving in the visualization allowed?}
 
@@ -131,6 +173,110 @@ RGB format. To revert back to original color, use the value "none".}
 \item{LINKMouseOverStrokeWidth}{Thickness of the link when hovered.}
 
 \item{LINKMouseOutStrokeWidth}{Thickness of the link when mouse is not hovering a link anymore.}
+
+\item{BARMouseOutDisplay}{Hide tooltip when mouse is not hovering a bar anymore.}
+
+\item{BARMouseOutColor}{Color of the bar when mouse is not hovering anymore, in hexadecimal
+RGB format. To revert back to original color, use the value "none".}
+
+\item{BARMouseOverDisplay}{Display the tooltip when mouse hover on a bar.}
+
+\item{BARMouseOverColor}{Color of the bar when hovered.}
+
+\item{BARMouseOverOpacity}{Opacity of the bar when hovered.}
+
+\item{BARMouseOverTooltipsHtml01}{Label displayed in tooltip in first position, before chromosome number.}
+
+\item{BARMouseOverTooltipsHtml02}{Label displayed in tooltip in second position, before start position.}
+
+\item{BARMouseOverTooltipsHtml03}{Label displayed in tooltip in second position, before end position.}
+
+\item{BARMouseOverTooltipsHtml04}{Label displayed in tooltip in third position, before labels if any.}
+
+\item{BARMouseOverTooltipsHtml05}{Label displayed in tooltip in fourth position, before values.}
+
+\item{BARMouseOverTooltipsHtml06}{Label displayed in tooltip in fifth position, after values.}
+
+\item{BARMouseOverTooltipsBorderWidth}{The thickness of the tooltip borders, with units specified (such as em or px).}
+
+\item{HEATMAPMouseOutDisplay}{Hide tooltip when mouse is not hovering a box anymore.}
+
+\item{HEATMAPMouseOutColor}{Color of the box when mouse is not hovering anymore, in hexadecimal
+RGB format. To revert back to original color, use the value "none".}
+
+\item{HEATMAPMouseOverDisplay}{Display the tooltip when mouse hover on a box.}
+
+\item{HEATMAPMouseOverColor}{Color of the box when hovered.}
+
+\item{HEATMAPMouseOverOpacity}{Opacity of the box when hovered.}
+
+\item{HEATMAPMouseOverTooltipsHtml01}{Label displayed in tooltip in first position, before chromosome number.}
+
+\item{HEATMAPMouseOverTooltipsHtml02}{Label displayed in tooltip in second position, before start position.}
+
+\item{HEATMAPMouseOverTooltipsHtml03}{Label displayed in tooltip in second position, before end position.}
+
+\item{HEATMAPMouseOverTooltipsHtml04}{Label displayed in tooltip in third position, before labels if any.}
+
+\item{HEATMAPMouseOverTooltipsHtml05}{Label displayed in tooltip in fourth position, before values.}
+
+\item{HEATMAPMouseOverTooltipsHtml06}{Label displayed in tooltip in fifth position, after values.}
+
+\item{HEATMAPMouseOverTooltipsBorderWidth}{The thickness of the tooltip borders, with units specified (such as em or px).}
+
+\item{LINEMouseOutDisplay}{Hide tooltip when mouse is not hovering a line anymore.}
+
+\item{LINEMouseOutLineOpacity}{Opacity of the line when mouse is not hovering a link anymore.}
+
+\item{LINEMouseOutLineStrokeColor}{Color of the line when mouse is not hovering anymore, in hexadecimal
+RGB format. To revert back to original color, use the value "none".}
+
+\item{LINEMouseOutLineStrokeWidth}{Thickness of the line when mouse is not hovering a link anymore.}
+
+\item{LINEMouseOverDisplay}{Display the tooltip when mouse hover on a line.}
+
+\item{LINEMouseOverLineOpacity}{Opacity of the line when hovered by the mouse, in hexadecimal RGB format.}
+
+\item{LINEMouseOverLineStrokeColor}{Color of the line when hovered by the mouse, in hexadecimal RGB format.}
+
+\item{LINEMouseOverLineStrokeWidth}{Width of the line when hovered by the mouse, in hexadecimal RGB format.}
+
+\item{LINEMouseOverTooltipsHtml01}{Label displayed in tooltip.}
+
+\item{LINEMouseOverTooltipsBorderWidth}{The thickness of the tooltip borders, with units specified (such as em or px).}
+
+\item{CNVMouseOutDisplay}{Hide tooltip when mouse is not hovering an arc anymore.}
+
+\item{CNVMouseOutColor}{Color of the line when mouse is not hovering anymore, in hexadecimal
+RGB format. To revert back to original color, use the value "none".}
+
+\item{CNVMouseOutArcOpacity}{Opacity of the arc when not hovered by the mouse anymore.}
+
+\item{CNVMouseOutArcStrokeColor}{Color of the arc's stroke when not hovered by the mouse anymore.}
+
+\item{CNVMouseOutArcStrokeWidth}{Width of the arc's stroke when not hovered by the mouse anymore.}
+
+\item{CNVMouseOverDisplay}{Display the tooltip when mouse hover on an arc.}
+
+\item{CNVMouseOverColor}{Color of the arc when hovered by the mouse, in hexadecimal RGB format.}
+
+\item{CNVMouseOverArcOpacity}{Opacity of the arc when hovered by the mouse.}
+
+\item{CNVMouseOverArcStrokeColor}{Color of the arc's stroke when hovered by the mouse, in hexadecimal RGB format.}
+
+\item{CNVMouseOverArcStrokeWidth}{Width of the arc's stroke when hovered by the mouse.}
+
+\item{CNVMouseOverTooltipsHtml01}{Label displayed in tooltip in first position, before chromosome number.}
+
+\item{CNVMouseOverTooltipsHtml02}{Label displayed in tooltip in second position, before starting position.}
+
+\item{CNVMouseOverTooltipsHtml03}{Label displayed in tooltip in second position, before ending position.}
+
+\item{CNVMouseOverTooltipsHtml04}{Label displayed in tooltip in third position, before value.}
+
+\item{CNVMouseOverTooltipsHtml05}{Label displayed in tooltip in third position, after value.}
+
+\item{CNVMouseOverTooltipsBorderWidth}{The thickness of the tooltip borders, with units specified (such as em or px).}
 
 \item{width, height}{Must be a valid CSS unit (like \code{'100\%'},
 \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a

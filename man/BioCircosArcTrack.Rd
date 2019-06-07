@@ -4,16 +4,17 @@
 \alias{BioCircosArcTrack}
 \title{Create a track with arcs to be added to a BioCircos tracklist}
 \usage{
-BioCircosArcTrack(trackname, chromosomes, starts, ends, colors = "#40B9D4",
-  labels = "", maxRadius = 0.9, minRadius = 0.5, ...)
+BioCircosArcTrack(trackname, chromosomes, starts, ends,
+  colors = "#40B9D4", labels = "", opacities = 1, maxRadius = 0.9,
+  minRadius = 0.5, ...)
 }
 \arguments{
 \item{trackname}{The name of the new track.}
 
-\item{chromosomes}{A vector containing the chromosomes on which each arcs are found.
+\item{chromosomes}{A vector containing the chromosomes on which each arc is found.
 Values should match the chromosome names given in the genome parameter of the BioCircos function.}
 
-\item{starts, ends}{Vectors containing the coordinates on which each arcs begin or end.
+\item{starts, ends}{Vectors containing the coordinates on which each arc begins or ends.
 Values should be inferior to the chromosome lengths given in the genome parameter of the BioCircos function.}
 
 \item{colors}{The colors for each arc. Can be a RColorBrewer palette name used to
@@ -21,6 +22,8 @@ generate one color per arc, or a character object or vector of character objects
 format or base R colors. If the vector is shorter than the number of arcs, values will be repeated.}
 
 \item{labels}{One or multiple character objects to label each arc.}
+
+\item{opacities}{One or multiple opacity values for the arcs, between 0 and 1.}
 
 \item{minRadius, maxRadius}{Where the track should begin and end, in proportion of the inner radius of the plot.}
 
