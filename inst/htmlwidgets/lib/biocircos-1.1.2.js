@@ -1124,7 +1124,7 @@ var BioCircos;
             .attr("height", height)
             .call(
                  d3.behavior.zoom()
-                 .scaleExtent([0.9, 10])
+                 .scaleExtent([0.9, 1000])
                  .on("zoom", zoom)
             )
           .append("g")

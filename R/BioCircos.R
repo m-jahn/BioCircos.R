@@ -2,14 +2,13 @@
 #'
 #' Interactive circular visualization of genomic data using ‘htmlwidgets’ and ‘BioCircos.js’
 #'
+#' @importFrom plyr alply
+#' @importFrom RColorBrewer brewer.pal
 #' @import htmlwidgets
-#' @import RColorBrewer
-#' @import plyr
 #' @import jsonlite
 #' @import grDevices
 #'
 #' @export
-
 #' BioCircos widget
 #'
 #' Interactive circular visualization of genomic data using 'htmlwidgets' and 'BioCircos.js'
@@ -782,7 +781,7 @@ BioCircosSNPTrack <- function(trackname, chromosomes, positions, values,
   tabSNP = suppressWarnings(rbind(unname(chromosomes), unname(positions), unname(values), unname(colors), 
     unname(labels), unname(opacities)))
   rownames(tabSNP) = c("chr", "pos", "value", "color", "des", "opacity")
-  track3 = unname(alply(tabSNP, 2, as.list))
+  track3 = unname(plyr::alply(tabSNP, 2, as.list))
 
   track = BioCircosTracklist() + list(list(track1, track2, track3))
   return(track)
@@ -826,7 +825,7 @@ BioCircosLineTrack <- function(trackname, chromosomes, positions, values, color 
     range = range)
   tabSNP = suppressWarnings(rbind(unname(chromosomes), unname(positions), unname(values)))
   rownames(tabSNP) = c("chr", "pos", "value")
-  track3 = unname(alply(tabSNP, 2, as.list))
+  track3 = unname(plyr::alply(tabSNP, 2, as.list))
 
   track = BioCircosTracklist() + list(list(track1, track2, track3))
   return(track)
@@ -869,7 +868,7 @@ BioCircosBarTrack <- function(trackname, chromosomes, starts, ends, values,
     range = range)
   tabHist = suppressWarnings(rbind(unname(chromosomes), unname(starts), unname(ends), unname(labels), unname(values)))
   rownames(tabHist) = c("chr", "start", "end", "name", "value")
-  track3 = unname(alply(tabHist, 2, as.list))
+  track3 = unname(plyr::alply(tabHist, 2, as.list))
 
   track = BioCircosTracklist() + list(list(track1, track2, track3))
   return(track)
@@ -909,7 +908,7 @@ BioCircosCNVTrack <- function(trackname, chromosomes, starts, ends, values,
     CNVColor = color, CNVwidth = width, range = range)
   tabHist = suppressWarnings(rbind(unname(chromosomes), unname(starts), unname(ends), unname(values)))
   rownames(tabHist) = c("chr", "start", "end", "value")
-  track3 = unname(alply(tabHist, 2, as.list))
+  track3 = unname(plyr::alply(tabHist, 2, as.list))
 
   track = BioCircosTracklist() + list(list(track1, track2, track3))
   return(track)
@@ -956,7 +955,7 @@ BioCircosHeatmapTrack <- function(trackname, chromosomes, starts, ends, values,
   # and 80 percents of the widget minimal dimension. The conversion to absolute values is performed on the JavaScript side. 
   tabHeat = suppressWarnings(rbind(unname(chromosomes), unname(starts), unname(ends), unname(labels), unname(values)))
   rownames(tabHeat) = c("chr", "start", "end", "name", "value")
-  track3 = unname(alply(tabHeat, 2, as.list))
+  track3 = unname(plyr::alply(tabHeat, 2, as.list))
 
   track = BioCircosTracklist() + list(list(track1, track2, track3))
   return(track)
@@ -1002,7 +1001,7 @@ BioCircosArcTrack <- function(trackname, chromosomes, starts, ends,
   # and 80 percents of the widget minimal dimension. The conversion to absolute values is performed on the JavaScript side. 
   tabSNP = suppressWarnings(rbind(unname(chromosomes), unname(starts), unname(ends), unname(colors), unname(labels), unname(opacities)))
   rownames(tabSNP) = c("chr", "start", "end", "color", "des", "opacity")
-  track3 = unname(alply(tabSNP, 2, as.list))
+  track3 = unname(plyr::alply(tabSNP, 2, as.list))
 
   track = BioCircosTracklist() + list(list(track1, track2, track3))
   return(track)
@@ -1061,7 +1060,7 @@ BioCircosLinkTrack <- function(trackname, gene1Chromosomes, gene1Starts, gene1En
   tabSNP = suppressWarnings(rbind(unname(labels), unname(gene1Chromosomes), unname(gene1Starts), unname(gene1Ends), 
     unname(gene1Names), unname(gene2Chromosomes), unname(gene2Starts), unname(gene2Ends), unname(gene2Names)))
   rownames(tabSNP) = c("fusion", "g1chr", "g1start", "g1end", "g1name", "g2chr", "g2start", "g2end", "g2name")
-  track3 = unname(alply(tabSNP, 2, as.list))
+  track3 = unname(plyr::alply(tabSNP, 2, as.list))
 
   track = BioCircosTracklist() + list(list(track1, track2, track3))
   return(track)
@@ -1118,7 +1117,7 @@ BioCircosTracklist <- function(){
     }
     else if(!all(grepl("^#", colVar))){ # Not RGB values
       if(all(colVar %in% colors())){
-        colVar = rgb(t(col2rgb(colVar))/255)
+        colVar = grDevices::rgb(t(grDevices::col2rgb(colVar))/255)
       }
       else{ # Unknown format
         stop(colorError)
