@@ -4,15 +4,13 @@
 \alias{BioCircos_wrapper}
 \title{Convenience wrapper function for the BioCircos package}
 \usage{
-BioCircos_wrapper(data, genome = NULL, gene_name, gene_start, gene_end,
-  gene_chromosome, gene_strand = NULL, gene_category = NULL,
-  gene_abundance = NULL, gene_foldchange = NULL, gene_heatmap = NULL,
-  color_heatmap = c("#F5F5F5", "#4E962D"),
-  range_abundance = c(min(data[[gene_abundance]], na.rm = TRUE),
-  max(data[[gene_abundance]], na.rm = TRUE)),
-  range_foldchange = c(min(data[[gene_foldchange]], na.rm = TRUE),
-  max(data[[gene_foldchange]], na.rm = TRUE)), track_size = 0.15,
-  track_gap = 0.02)
+BioCircos_wrapper(data, genome = NULL, genome_color = NULL, gene_name,
+  gene_start, gene_end, gene_chromosome, gene_strand = NULL,
+  gene_category = NULL, gene_abundance = NULL,
+  gene_foldchange = NULL, gene_heatmap = NULL, gene_linetrack = NULL,
+  color_heatmap = c("#F5F5F5", "#4E962D"), range_abundance = NULL,
+  range_foldchange = NULL, range_heatmap = NULL,
+  range_linetrack = NULL, track_size = 0.15, track_gap = 0.02)
 }
 \arguments{
 \item{data}{A data frame or tibble.}
@@ -20,6 +18,8 @@ BioCircos_wrapper(data, genome = NULL, gene_name, gene_start, gene_end,
 \item{genome}{A named list of chromosomes and their total length such as
 \code{list(chromsome_1 = 1000)}. If not provided the genome information
 is retrieved from gene annotation.}
+
+\item{genome_color}{(character) (optional) color vector of same length as \code{genome}.}
 
 \item{gene_name}{(character) column name of the data frame containing gene names.}
 
@@ -39,11 +39,21 @@ is retrieved from gene annotation.}
 
 \item{gene_heatmap}{(character) (optional) column name(s) of the data frame containing abundances plotted as heatmap.}
 
+\item{gene_linetrack}{(character) (optional) column name(s) of the data frame containing abundances plotted as lines.}
+
 \item{color_heatmap}{(character) (optional) vector of length 2 indicating colors to use for heatmap gradient}
 
 \item{range_abundance}{(numeric) (optional) range for plotting gene/protein abundances. Vector of length 2.}
 
 \item{range_foldchange}{(numeric) (optional) range for plotting gene/protein fold changes. Vector of length 2.}
+
+\item{range_heatmap}{(numeric) (optional) range for plotting gene/protein abundances. Vector of length 2.}
+
+\item{range_linetrack}{(numeric) (optional) range for plotting gene/protein abundances. Vector of length 2.}
+
+\item{track_size}{(numeric) (optional) size of one circular layer added to the plot, a scalar between 0 and 1.}
+
+\item{track_gap}{(numeric) (optional) size of the gap between circular layers, a scalar between 0 and 1.}
 }
 \description{
 This function takes as arguments a data.frame and a list of columns

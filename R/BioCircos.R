@@ -238,6 +238,9 @@ BioCircos <- function(tracklist = BioCircosTracklist(),
 
   # If genomeFillColor is a palette, create corresponding color vector
   genomeFillColor = .BioCircosColorCheck(genomeFillColor, length(genome), "genomeFillColor")
+  if (length(genomeFillColor) == 1) {
+    genomeFillColor <- rep(genomeFillColor, 2)
+  }
 
   # forward options using x
   x = list(
