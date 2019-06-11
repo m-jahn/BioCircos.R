@@ -12,11 +12,17 @@
 #' @param gene_end (character) column name of the data frame containing end positions in pb.
 #' @param gene_chromosome (character) column name of the data frame containing the chromosome ID of each gene.
 #' @param gene_strand (character) (optional) column name of the data frame containing the strand of each gene ('+' or '-').
-#' @param gene_category (character) (optional) column name of the data frame containing gene annotation such as 'Respiratory chain' or 'Unknown'.
-#' @param gene_abundance (character) (optional) column name of the data frame containing an absolute abundance such as protein length or mass fraction.
+#' @param gene_category (character) (optional) column name of the data frame containing gene annotation such 
+#'   as 'Respiratory chain' or 'Unknown'.
+#' @param gene_abundance (character) (optional) column name of the data frame containing an absolute abundance 
+#'   such as protein length or mass fraction.
 #' @param gene_foldchange (character) (optional) column name of the data frame containing fold change values for a gene.
-#' @param gene_heatmap (character) (optional) column name(s) of the data frame containing abundances plotted as heatmap.
+#' @param gene_heatmap (character) (optional) column name(s) of the data frame containing abundances plotted as heatmap. 
+#'   Can contain more than one element.
 #' @param gene_linetrack (character) (optional) column name(s) of the data frame containing abundances plotted as lines.
+#'   Can contain more than one element.
+#' @param gene_labels (character) (optional) column name with labels that will be plotted as arcs. 
+#'   Can contain NAs for labels hat should not be plotted.
 #' @param color_heatmap (character) (optional) vector of length 2 indicating colors to use for heatmap gradient
 #' @param range_abundance (numeric) (optional) range for plotting gene/protein abundances. Vector of length 2.
 #' @param range_foldchange (numeric) (optional) range for plotting gene/protein fold changes. Vector of length 2.
@@ -26,9 +32,11 @@
 #' @param track_gap (numeric) (optional) size of the gap between circular layers, a scalar between 0 and 1.
 #'
 #' @importFrom dplyr %>%
+#' @importFrom dplyr group_by
 #' @importFrom dplyr arrange
 #' @importFrom dplyr filter
 #' @importFrom dplyr mutate
+#' @importFrom dplyr mutate_at
 #' @importFrom dplyr summarise
 #' @importFrom scales rescale
 #' @importFrom colorspace qualitative_hcl
@@ -47,6 +55,7 @@ BioCircos_wrapper <- function(data,
   gene_foldchange = NULL,
   gene_heatmap = NULL,
   gene_linetrack = NULL,
+  gene_labels = NULL,
   color_heatmap = c("#F5F5F5", "#4E962D"),
   range_abundance = NULL, 
   range_foldchange = NULL,
@@ -73,6 +82,7 @@ BioCircos_wrapper <- function(data,
       setNames(genome$chromosome)
   }
   
+  
   # set colors for genome circles
   if (is.null(genome_color)) {
     genome_color <- qualitative_hcl(n = length(genome), h = c(20, 360), c = 100, l = 70)
@@ -80,64 +90,27 @@ BioCircos_wrapper <- function(data,
     stop("genome_color must be a character vector of length(genome)")
   }
   
-  # set ranges from data if not provided
-  if (!is.null(gene_abundance)) {
-    # clip abundances to the provided range
-    if (!is.null(range_abundance)) {
-      data[[gene_abundance]] <- sapply(data[[gene_abundance]], {
-        function(x) pmax(range_abundance[1], pmin(x, range_abundance[2]))
-      })
-    } else {
-      range_abundance <- c(
-        min(data[[gene_abundance]], na.rm = TRUE), 
-        max(data[[gene_abundance]], na.rm = TRUE)
-      )
-    }
-  }
   
   # set ranges from data if not provided
-  if (!is.null(gene_foldchange)) {
-    # clip foldchange to the provided range
-    if (!is.null(range_foldchange)) {
-      data[[gene_foldchange]] <- sapply(data[[gene_foldchange]], {
-        function(x) pmax(range_foldchange[1], pmin(x, range_foldchange[2]))
-      })
-    } else {
-      range_foldchange <- c(
-        min(data[[gene_foldchange]], na.rm = TRUE),
-        max(data[[gene_foldchange]], na.rm = TRUE)
-      )
+  for (dat_col in c("abundance", "foldchange", "heatmap", "linetrack")) {
+    
+    gene_var <- paste0("gene_", dat_col)
+    range_var <- paste0("range_", dat_col)
+    
+    if (!is.null(get(gene_var))) {
+      # clip abundances to the provided range
+      if (!is.null(get(range_var))) {
+        data <- dplyr::mutate_at(data, vars(get(gene_var)), 
+          function(x) pmax(get(range_var)[1], pmin(x, get(range_var)[2])))
+      } else {
+      # alternatively set range 
+        assign(range_var, c(
+          min(data[get(gene_var)], na.rm = TRUE), 
+          max(data[get(gene_var)], na.rm = TRUE)
+        ))
+      }
     }
-  }
-  
-  # set ranges from data if not provided
-  if (!is.null(gene_heatmap)) {
-    # clip foldchange to the provided range
-    if (!is.null(range_heatmap)) {
-      data[gene_heatmap] <- apply(data[gene_heatmap], 2,
-        function(x) pmax(range_heatmap[1], pmin(x, range_heatmap[2]))
-      )
-    } else {
-      range_foldchange <- c(
-        min(data[gene_heatmap], na.rm = TRUE),
-        max(data[gene_heatmap], na.rm = TRUE)
-      )
-    }
-  }
-  
-  # set ranges from data if not provided
-  if (!is.null(gene_linetrack)) {
-    # clip foldchange to the provided range
-    if (!is.null(range_linetrack)) {
-      data[gene_linetrack] <- apply(data[gene_linetrack], 2,
-        function(x) pmax(range_linetrack[1], pmin(x, range_linetrack[2]))
-      )
-    } else {
-      range_linetrack <- c(
-        min(data[gene_linetrack], na.rm = TRUE),
-        max(data[gene_linetrack], na.rm = TRUE)
-      )
-    }
+    
   }
   
   # define color code for genes
@@ -150,6 +123,7 @@ BioCircos_wrapper <- function(data,
     data$gene_color <- data[[gene_category]] %>% 
       as.factor %>% as.numeric %>% custom_palette[.]
   }
+  
   
   # PLOTTING OF DIFFERENT LAYERS -----------------------------------------------
   #
@@ -194,6 +168,30 @@ BioCircos_wrapper <- function(data,
       ends = data[[gene_end]],
       minRadius = 1.2, maxRadius = 1.22)
   }
+  
+  
+  # ADD GENES AS ARCS
+  if (!is.null(gene_labels)) {
+    
+    # generate label arcs from column
+    d <- dplyr::filter(data, !is.na(get(gene_labels))) %>%
+      dplyr::group_by(get(gene_labels)) %>%
+      dplyr::summarise(
+        start = get(gene_start)[1],
+        end = tail(get(gene_end), 1),
+        chromosome = get(gene_chromosome)[1]
+      )
+
+    tracklist = tracklist + BioCircosArcTrack("track_gene_labels", 
+      labels = d[['get(gene_labels)']],
+      colors = grey(0.6),
+      chromosomes = d[["chromosome"]],
+      starts = d[["start"]],
+      ends = d[["end"]],
+      minRadius = 1.28, maxRadius = 1.30)
+    
+  }
+  
   
   # ADD BARS FOR PROTEIN ABUNDANCES
   if (!is.null(gene_abundance)) {

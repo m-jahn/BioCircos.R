@@ -8,9 +8,10 @@ BioCircos_wrapper(data, genome = NULL, genome_color = NULL, gene_name,
   gene_start, gene_end, gene_chromosome, gene_strand = NULL,
   gene_category = NULL, gene_abundance = NULL,
   gene_foldchange = NULL, gene_heatmap = NULL, gene_linetrack = NULL,
-  color_heatmap = c("#F5F5F5", "#4E962D"), range_abundance = NULL,
-  range_foldchange = NULL, range_heatmap = NULL,
-  range_linetrack = NULL, track_size = 0.15, track_gap = 0.02)
+  gene_labels = NULL, color_heatmap = c("#F5F5F5", "#4E962D"),
+  range_abundance = NULL, range_foldchange = NULL,
+  range_heatmap = NULL, range_linetrack = NULL, track_size = 0.15,
+  track_gap = 0.02)
 }
 \arguments{
 \item{data}{A data frame or tibble.}
@@ -31,15 +32,22 @@ is retrieved from gene annotation.}
 
 \item{gene_strand}{(character) (optional) column name of the data frame containing the strand of each gene ('+' or '-').}
 
-\item{gene_category}{(character) (optional) column name of the data frame containing gene annotation such as 'Respiratory chain' or 'Unknown'.}
+\item{gene_category}{(character) (optional) column name of the data frame containing gene annotation such 
+as 'Respiratory chain' or 'Unknown'.}
 
-\item{gene_abundance}{(character) (optional) column name of the data frame containing an absolute abundance such as protein length or mass fraction.}
+\item{gene_abundance}{(character) (optional) column name of the data frame containing an absolute abundance 
+such as protein length or mass fraction.}
 
 \item{gene_foldchange}{(character) (optional) column name of the data frame containing fold change values for a gene.}
 
-\item{gene_heatmap}{(character) (optional) column name(s) of the data frame containing abundances plotted as heatmap.}
+\item{gene_heatmap}{(character) (optional) column name(s) of the data frame containing abundances plotted as heatmap. 
+Can contain more than one element.}
 
-\item{gene_linetrack}{(character) (optional) column name(s) of the data frame containing abundances plotted as lines.}
+\item{gene_linetrack}{(character) (optional) column name(s) of the data frame containing abundances plotted as lines.
+Can contain more than one element.}
+
+\item{gene_labels}{(character) (optional) column name with labels that will be plotted as arcs. 
+Can contain NAs for labels hat should not be plotted.}
 
 \item{color_heatmap}{(character) (optional) vector of length 2 indicating colors to use for heatmap gradient}
 
