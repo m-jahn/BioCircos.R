@@ -1,12 +1,11 @@
-#' @import colorspace
+#' Calculate and draw p-values in lattice plots
+#' 
+#' Custom panel functions for lattice plots
+#' 
 #' @import lattice
 #' @import latticeExtra
-
-
-# NEW PANEL FUNCTION FOR P-VALUE ANNOTATION
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# attention: y is measurement, x is conditional variable, std is the factor level
-# that the other levels are compared to
+#' @export
+# ------------------------------------------------------------------------------
 panel.pvalue <- function(x, y, std, symbol = TRUE, cex.symbol = 1.5, offset = 1, 
   fixed.pos = NULL, verbose = TRUE, 
   col = trellis.par.get()$superpose.polygon$col[1], ...
@@ -41,8 +40,12 @@ panel.pvalue <- function(x, y, std, symbol = TRUE, cex.symbol = 1.5, offset = 1,
 }
 
 
-# NEW PANEL FUNCTION FOR XYPLOT WITH ERROR BARS
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#' Calculate and draw error bars in lattice plots
+#' 
+#' Custom panel functions for lattice plots
+#' 
+#' @export
+# ------------------------------------------------------------------------------
 panel.errbars <- function (x, y, ewidth = 0.08, 
   FUN = function(x) mean(x, na.rm = TRUE),
   border = trellis.par.get()$superpose.polygon$col[1], ...)
@@ -64,8 +67,12 @@ panel.errbars <- function (x, y, ewidth = 0.08,
 }
 
 
-# NEW PANEL FUNCTION FOR BARPLOT WITH ERROR BARS
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#' Draw barplot with error bars in lattice plots
+#' 
+#' Custom panel functions for lattice plots
+#' 
+#' @export
+# ------------------------------------------------------------------------------
 panel.barplot <- function (x, y, ewidth = 0.08, 
   border = trellis.par.get()$superpose.polygon$col[1], 
   fill = "white", ...)
@@ -88,8 +95,12 @@ panel.barplot <- function (x, y, ewidth = 0.08,
 }
 
 
-# NEW PANEL FUNCTION DRAWING KEYS INSIDE PANELS
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#' Draw custom keys in lattice plots
+#' 
+#' Custom panel functions for lattice plots
+#' 
+#' @export
+# ------------------------------------------------------------------------------
 panel.key <- function (labels, which.panel = 1, pch = 1, cex = 0.8, 
   point.cex = NULL, points = TRUE, lines = FALSE, rectangles = FALSE,
   col = trellis.par.get()$superpose.polygon$col[1:length(labels)],
@@ -122,8 +133,12 @@ panel.key <- function (labels, which.panel = 1, pch = 1, cex = 0.8,
 }
 
 
-# NEW PANEL FUNCTION DRAWING QUADRANTS AND PERCENTAGES/QUADRANT
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#' Draw quadrants and quadrant statistics in lattice plots
+#' 
+#' Custom panel functions for lattice plots
+#' 
+#' @export
+# ------------------------------------------------------------------------------
 panel.quadrants <- function (x, y, h = NULL, v = NULL, 
   labels = "percent", col = grey(0.5), margin = 0.1,
   lwd = trellis.par.get()$superpose.polygon$lwd[1], ...)

@@ -135,16 +135,19 @@ BioCircos_linear <- function(
   tracklist <- list()
   tracklist$genes <- xyplot(get(gene_end) ~ get(gene_start), data,
     xlim = genome_xlim,
-    ylim = c(-2, 2), 
+    ylim = c(-4, 2), 
     xlab = "location [bp]", ylab = "",
-    par.settings = custom.lattice, 
-    scales = list(alternating = FALSE, y = list(draw = FALSE)),
+    par.settings = custom.lattice,
+    scales = list(alternating = FALSE, y = list(rot = 0)),
     panel = function(x, y, ...) {
       strand = ifelse(data[[gene_strand]] == "+", 1, -1)
       panel.grid(h = -1, v = -1, col = grey(0.9))
       panel.rect(xleft = x, ybottom = 0, xright = y, ytop = strand,
         border = grey(0.3), fill = data[["gene_color"]], lwd = 1.5)
-      panel.text(x+(y-x)/2, 0.5 * strand, data[[gene_name]], col = grey(0.3))
+      panel.text(x+(y-x)/2, -1.5, data[[gene_name]], col = grey(0.3), 
+        srt = 35, cex = 0.7, adj = c(1.0, 1.0), pos = NULL)
+      panel.segments(x0 = x+(y-x)/2, y0 = ifelse(strand == -1, -1, 0), x1 = x+(y-x)/2, y1 = -1.4, 
+        col = grey(0.3), lwd = 0.8)
       panel.abline(h = 0, lwd = 1.5, col = grey(0.3))
     }
   )
@@ -162,7 +165,6 @@ BioCircos_linear <- function(
       xlim = genome_xlim, ylim = range_abundance,
       panel = function(x, y, ...) {
         panel.grid(h = -1, v = -1, col = grey(0.9))
-        panel.key(labels = gene_abundance)
         panel.xyarea(x, y, lwd = 1.5, alpha = 0.5, origin = 0, ...)
       }
     )
@@ -174,4 +176,5 @@ BioCircos_linear <- function(
   tracklist <- unname(tracklist)
   tracklist$layout = c(1, length(tracklist))
   do.call(c, args = tracklist)
+  
 }
