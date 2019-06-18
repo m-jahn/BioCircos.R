@@ -2,6 +2,7 @@
 #' 
 #' Custom panel functions for lattice plots
 #' 
+#' @import grid
 #' @import lattice
 #' @import latticeExtra
 #' @export
@@ -123,12 +124,12 @@ panel.key <- function (labels, which.panel = 1, pch = 1, cex = 0.8,
       key$lines$lty <- lty
     }
     key.gf <- draw.key(key, draw = FALSE)
-    vp <- viewport(x = unit(x, "npc") + unit(0.5 - corner[1], 
+    vp <- grid::viewport(x = unit(x, "npc") + unit(0.5 - corner[1], 
       "grobwidth", list(key.gf)), y = unit(y, "npc") + unit(0.5 - 
       corner[2], "grobheight", list(key.gf)))
-    pushViewport(vp)
-    grid.draw(key.gf)
-    upViewport()
+    grid::pushViewport(vp)
+    grid::grid.draw(key.gf)
+    grid::upViewport()
   }
 }
 
