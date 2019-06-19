@@ -42,7 +42,8 @@
 #' @importFrom colorspace qualitative_hcl
 #'
 #' @export
-BioCircos_wrapper <- function(data, 
+BioCircos_wrapper <- function(
+  data, 
   genome = NULL,
   genome_color = NULL,
   gene_name,
