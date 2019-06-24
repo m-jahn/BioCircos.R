@@ -12,6 +12,23 @@ panel.key(labels, which.panel = 1, pch = 1, cex = 0.8,
   lty = trellis.par.get()$superpose.line$lty[1], corner = c(0.1, 0.9),
   x = corner[1], y = corner[2], ...)
 }
+\arguments{
+\item{labels}{(character) list of the labels to draw}
+
+\item{which.panel}{(numeric) the panel(s) where key(s) should be drawn}
+
+\item{points}{(logical) if points should be drawn}
+
+\item{lines}{if lines should be drawn}
+
+\item{col, lwd, lty, pch, cex, point.cex}{graphical parameters to draw key labels
+and symbols}
+
+\item{corner}{(numeric) vector of length 2 indicating the position of the key,
+in Normalised Parent Coordinates (0 to 1)}
+
+\item{reactangles}{if rectangles should be drawn}
+}
 \description{
 Custom panel functions for lattice plots
 }

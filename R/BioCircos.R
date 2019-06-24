@@ -2,17 +2,6 @@
 #'
 #' Interactive circular visualization of genomic data using ‘htmlwidgets’ and ‘BioCircos.js’
 #'
-#' @importFrom plyr alply
-#' @importFrom RColorBrewer brewer.pal
-#' @import htmlwidgets
-#' @import jsonlite
-#' @import grDevices
-#'
-#' @export
-#' BioCircos widget
-#'
-#' Interactive circular visualization of genomic data using 'htmlwidgets' and 'BioCircos.js'
-#' 
 #' @param tracklist A list of tracks to display.
 #' @param genome A list of chromosome lengths to be used as reference for the visualization or 'hg19' to use
 #'  the chromosomes 1 to 22 and the sexual chromosomes according to the hg19 reference.
@@ -153,6 +142,12 @@
 #' 
 #' @examples
 #' BioCircos(yChr = FALSE, chrPad = 0, genomeFillColor = "Blues")
+#' 
+#' @importFrom plyr alply
+#' @importFrom RColorBrewer brewer.pal
+#' @import htmlwidgets
+#' @import jsonlite
+#' @import grDevices
 #' 
 #' @export
 BioCircos <- function(tracklist = BioCircosTracklist(),

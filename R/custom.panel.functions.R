@@ -5,6 +5,19 @@
 #' @import grid
 #' @import lattice
 #' @import latticeExtra
+#' 
+#' @param x,y (numeric, character) variables to be plotted. The x variable 
+#'   is treated as a grouping varibale, i.e. p-values are calculated between groups
+#'   of unique x values.
+#' @param std (character) the value of x that is used as standard
+#' @param symbol (logical) if '*' symbols are to be drawn for significance
+#' @param cex.symbol (numeric) character size of the symbol
+#' @param offset (numeric) offset added to the the vertical position of the p-value
+#' @param fixed.pos (numeric) vertical position of the p-value, 
+#'   if NULL determined from the data
+#' @param verbose (logical) if a summary of the p-value calculation should be 
+#'   printed to the terminal
+#' 
 #' @export
 # ------------------------------------------------------------------------------
 panel.pvalue <- function(x, y, std, symbol = TRUE, cex.symbol = 1.5, offset = 1, 
@@ -45,14 +58,21 @@ panel.pvalue <- function(x, y, std, symbol = TRUE, cex.symbol = 1.5, offset = 1,
 #' 
 #' Custom panel functions for lattice plots
 #' 
+#' @param x,y (numeric, character) variables to be plotted. The x variable 
+#'   is treated as a grouping varibale, i.e. error bars are calculated between groups
+#'   of unique x values.
+#' @param ewidth width of the error bar whiskers
+#' @param FUN_mean the function used to calculate group (x-variable) means
+#' @param FUN_errb the function used to calculate group (x-variable) errors
+#' 
 #' @export
 # ------------------------------------------------------------------------------
 panel.errbars <- function (x, y, ewidth = 0.08, 
-  FUN = function(x) mean(x, na.rm = TRUE),
-  border = trellis.par.get()$superpose.polygon$col[1], ...)
+  FUN_mean = function(x) mean(x, na.rm = TRUE),
+  FUN_errb = function(x) sd(x, na.rm = TRUE), ...)
 {
-  means <- tapply(y, x, FUN)
-  stdev <- tapply(y, x, function(x) sd(x, na.rm = TRUE))
+  means <- tapply(y, x, FUN_mean)
+  stdev <- tapply(y, x, FUN_errb)
   x <- unique(x)
   if (is.factor(x)) x <- sort(as.numeric(x))
   Y <- as.matrix(cbind(means, means-stdev, means+stdev))
@@ -60,11 +80,10 @@ panel.errbars <- function (x, y, ewidth = 0.08,
   y0 <- Y[x, 2]
   y1 <- Y[x, 3]
   offs <- ewidth/2
-  ybottom <- current.panel.limits()$ylim[1]
-  panel.segments(x0 = x, x1 = x, y0 = y0, y1 = y1, col = border, ...)
-  panel.segments(x0 = x - offs, x1 = x + offs, y0 = y0, y1 = y0, col = border, ...)
-  panel.segments(x0 = x - offs, x1 = x + offs, y0 = y1, y1 = y1, col = border, ...)
-  panel.xyplot(x, y, col = border, ...)
+  panel.segments(x0 = x, x1 = x, y0 = y0, y1 = y1, ...)
+  panel.segments(x0 = x - offs, x1 = x + offs, y0 = y0, y1 = y0, ...)
+  panel.segments(x0 = x - offs, x1 = x + offs, y0 = y1, y1 = y1, ...)
+  panel.xyplot(x, y, ...)
 }
 
 
@@ -72,14 +91,21 @@ panel.errbars <- function (x, y, ewidth = 0.08,
 #' 
 #' Custom panel functions for lattice plots
 #' 
+#' @param x,y (numeric, character) variables to be plotted. The x variable 
+#'   is treated as a grouping varibale, i.e. error bars are calculated between groups
+#'   of unique x values.
+#' @param ewidth width of the error bar whiskers
+#' @param FUN_mean the function used to calculate group (x-variable) means
+#' @param FUN_errb the function used to calculate group (x-variable) errors
+#' 
 #' @export
 # ------------------------------------------------------------------------------
 panel.barplot <- function (x, y, ewidth = 0.08, 
-  border = trellis.par.get()$superpose.polygon$col[1], 
-  fill = "white", ...)
+  FUN_mean = function(x) mean(x, na.rm = TRUE),
+  FUN_errb = function(x) sd(x, na.rm = TRUE), ...)
 {
-  means <- tapply(y, x, function(x) mean(x, na.rm = TRUE))
-  stdev <- tapply(y, x, function(x) sd(x, na.rm = TRUE))
+  means <- tapply(y, x, FUN_mean)
+  stdev <- tapply(y, x, FUN_errb)
   x <- unique(x)
   if (is.factor(x)) x <- sort(as.numeric(x))
   Y <- as.matrix(cbind(means, means-stdev, means+stdev))
@@ -88,17 +114,38 @@ panel.barplot <- function (x, y, ewidth = 0.08,
   y1 <- Y[x, 3]
   offs <- ewidth/2
   ybottom <- current.panel.limits()$ylim[1]
-  panel.segments(x0 = x, x1 = x, y0 = y0, y1 = y1, col = border, ...)
-  panel.segments(x0 = x - offs, x1 = x + offs, y0 = y0, y1 = y0, col = border, ...)
-  panel.segments(x0 = x - offs, x1 = x + offs, y0 = y1, y1 = y1, col = border, ...)
-  panel.rect(xleft=x - ewidth, ybottom = ybottom, xright = x + ewidth, ytop = y, 
-    col = fill, border = border, ...)
+  
+  panel.rect <- function (xleft, ybottom, xright, ytop, x = (xleft + xright)/2, 
+    y = (ybottom + ytop)/2, width = xright - xleft, height = ytop - ybottom, 
+    col = NULL, fill = NULL, lty = 1, lwd = 1, alpha = 1, font, fontface, ..., 
+    identifier = NULL, name.type = "panel")
+  {
+    grid::grid.rect(x = x, y = y, width = width, height = height, default.units = "native",
+      gp = grid::gpar(fill = fill, col = col, lty = lty, lwd = lwd, alpha = alpha, ...)
+    )
+  }
+  
+  panel.segments(x0 = x, x1 = x, y0 = y0, y1 = y1, ...)
+  panel.segments(x0 = x - offs, x1 = x + offs, y0 = y0, y1 = y0, ...)
+  panel.segments(x0 = x - offs, x1 = x + offs, y0 = y1, y1 = y1, ...)
+  panel.rect(xleft = x - ewidth, ybottom = ybottom, xright = x + ewidth, 
+    ytop = y, ...)
 }
 
 
 #' Draw custom keys in lattice plots
 #' 
 #' Custom panel functions for lattice plots
+#' 
+#' @param labels (character) list of the labels to draw
+#' @param which.panel (numeric) the panel(s) where key(s) should be drawn
+#' @param points (logical) if points should be drawn
+#' @param lines if lines should be drawn
+#' @param reactangles if rectangles should be drawn
+#' @param corner (numeric) vector of length 2 indicating the position of the key,
+#'   in Normalised Parent Coordinates (0 to 1)
+#' @param col,lwd,lty,pch,cex,point.cex graphical parameters to draw key labels
+#'   and symbols
 #' 
 #' @export
 # ------------------------------------------------------------------------------
@@ -138,6 +185,15 @@ panel.key <- function (labels, which.panel = 1, pch = 1, cex = 0.8,
 #' 
 #' Custom panel functions for lattice plots
 #' 
+#' @param x,y (numeric) variables to be plotted
+#' @param h,v (numeric) position of the horizontal or vertical threshold for dividing the
+#'   data into quadarants. Defaults to the median.
+#' @param labels (character) One of 'percent', 'events', or 'none'. Controls what
+#'   type of summary is plottted per quadrant
+#' @param col,lwd graphical parameters for lines and labels
+#' @param margin (numeric) margin of labels to the plot edges in Normalised Parent 
+#'   Coordinates, default is 0.1
+#' 
 #' @export
 # ------------------------------------------------------------------------------
 panel.quadrants <- function (x, y, h = NULL, v = NULL, 
@@ -154,7 +210,6 @@ panel.quadrants <- function (x, y, h = NULL, v = NULL,
   if (is.null(v))
     v = median(x)
   panel.abline(h = h, v = v, lwd = lwd, col.line = col)
-  
   
   # plot percentages of the 4 quadrants as text
   quadrant <- list(
