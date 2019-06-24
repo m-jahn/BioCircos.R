@@ -25,10 +25,11 @@ custom.ggplot <- function() {
 # ------------------------------------------------------------------------------
 custom.lattice <- function() {
   theme <- latticeExtra::custom.theme(
-    symbol = c("#00526D", rainbow_hcl(n = 6, c = 90, l = 50)),
-    fill = c("#00526D", rainbow_hcl(n = 6, c = 90, l = 50)),
-    region = c("#00526D", rainbow_hcl(n = 6, c = 90, l = 50)),
+    symbol = c("#00526D", colorspace::rainbow_hcl(n = 6, c = 90, l = 50)),
+    fill = c("#00526D", colorspace::rainbow_hcl(n = 6, c = 90, l = 50)),
+    region = c("#00526D", colorspace::rainbow_hcl(n = 6, c = 90, l = 50)),
     reference = 1, bg = 0, fg = 1)
+  theme$superpose.symbol$fill <- c("#00526D", colorspace::rainbow_hcl(n = 6, c = 90, l = 50))
   theme$strip.background$col <- c(grey(0.95), grey(0.85))
   theme$strip.shingle$col <- c(grey(0.75), grey(0.65))
   theme$superpose.line$lwd <- 1.5

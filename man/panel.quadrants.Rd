@@ -8,6 +8,20 @@ panel.quadrants(x, y, h = NULL, v = NULL, labels = "percent",
   col = grey(0.5), margin = 0.1,
   lwd = trellis.par.get()$superpose.polygon$lwd[1], ...)
 }
+\arguments{
+\item{x, y}{(numeric) variables to be plotted}
+
+\item{h, v}{(numeric) position of the horizontal or vertical threshold for dividing the
+data into quadarants. Defaults to the median.}
+
+\item{labels}{(character) One of 'percent', 'events', or 'none'. Controls what
+type of summary is plottted per quadrant}
+
+\item{col, lwd}{graphical parameters for lines and labels}
+
+\item{margin}{(numeric) margin of labels to the plot edges in Normalised Parent 
+Coordinates, default is 0.1}
+}
 \description{
 Custom panel functions for lattice plots
 }

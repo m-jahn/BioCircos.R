@@ -4,8 +4,19 @@
 \alias{panel.errbars}
 \title{Calculate and draw error bars in lattice plots}
 \usage{
-panel.errbars(x, y, ewidth = 0.08, FUN = function(x) mean(x, na.rm =
-  TRUE), border = trellis.par.get()$superpose.polygon$col[1], ...)
+panel.errbars(x, y, ewidth = 0.08, FUN_mean = function(x) mean(x, na.rm
+  = TRUE), FUN_errb = function(x) sd(x, na.rm = TRUE), ...)
+}
+\arguments{
+\item{x, y}{(numeric, character) variables to be plotted. The x variable 
+is treated as a grouping varibale, i.e. error bars are calculated between groups
+of unique x values.}
+
+\item{ewidth}{width of the error bar whiskers}
+
+\item{FUN_mean}{the function used to calculate group (x-variable) means}
+
+\item{FUN_errb}{the function used to calculate group (x-variable) errors}
 }
 \description{
 Custom panel functions for lattice plots

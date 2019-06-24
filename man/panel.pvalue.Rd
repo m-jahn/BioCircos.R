@@ -8,6 +8,25 @@ panel.pvalue(x, y, std, symbol = TRUE, cex.symbol = 1.5, offset = 1,
   fixed.pos = NULL, verbose = TRUE,
   col = trellis.par.get()$superpose.polygon$col[1], ...)
 }
+\arguments{
+\item{x, y}{(numeric, character) variables to be plotted. The x variable 
+is treated as a grouping varibale, i.e. p-values are calculated between groups
+of unique x values.}
+
+\item{std}{(character) the value of x that is used as standard}
+
+\item{symbol}{(logical) if '*' symbols are to be drawn for significance}
+
+\item{cex.symbol}{(numeric) character size of the symbol}
+
+\item{offset}{(numeric) offset added to the the vertical position of the p-value}
+
+\item{fixed.pos}{(numeric) vertical position of the p-value, 
+if NULL determined from the data}
+
+\item{verbose}{(logical) if a summary of the p-value calculation should be 
+printed to the terminal}
+}
 \description{
 Custom panel functions for lattice plots
 }
