@@ -4,8 +4,8 @@
 \alias{panel.pvalue}
 \title{Calculate and draw p-values in lattice plots}
 \usage{
-panel.pvalue(x, y, std, symbol = TRUE, cex.symbol = 1.5, offset = 1,
-  fixed.pos = NULL, verbose = TRUE,
+panel.pvalue(x, y, std = NULL, symbol = TRUE, cex.symbol = 1.5,
+  offset = 1, fixed.pos = NULL, verbose = TRUE,
   col = trellis.par.get()$superpose.polygon$col[1], ...)
 }
 \arguments{
@@ -13,7 +13,9 @@ panel.pvalue(x, y, std, symbol = TRUE, cex.symbol = 1.5, offset = 1,
 is treated as a grouping varibale, i.e. p-values are calculated between groups
 of unique x values.}
 
-\item{std}{(character) the value of x that is used as standard}
+\item{std}{(character, numeric) the value of x that is used as standard. If NULL, the 
+first value is used as standard. If a numeric scalar i, std is determined 
+as the i'th element of unique(x)}
 
 \item{symbol}{(logical) if '*' symbols are to be drawn for significance}
 

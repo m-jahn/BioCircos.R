@@ -9,7 +9,9 @@
 #' @param x,y (numeric, character) variables to be plotted. The x variable 
 #'   is treated as a grouping varibale, i.e. p-values are calculated between groups
 #'   of unique x values.
-#' @param std (character) the value of x that is used as standard
+#' @param std (character, numeric) the value of x that is used as standard. If NULL, the 
+#'   first value is used as standard. If a numeric scalar i, std is determined 
+#'   as the i'th element of unique(x)
 #' @param symbol (logical) if '*' symbols are to be drawn for significance
 #' @param cex.symbol (numeric) character size of the symbol
 #' @param offset (numeric) offset added to the the vertical position of the p-value
@@ -20,11 +22,21 @@
 #' 
 #' @export
 # ------------------------------------------------------------------------------
-panel.pvalue <- function(x, y, std, symbol = TRUE, cex.symbol = 1.5, offset = 1, 
+panel.pvalue <- function(x, y, std = NULL, symbol = TRUE, cex.symbol = 1.5, offset = 1, 
   fixed.pos = NULL, verbose = TRUE, 
   col = trellis.par.get()$superpose.polygon$col[1], ...
   ) 
 { 
+  # if no standard is passed to function, just take the first unique x
+  if (is.null(std)) {
+    std = unique(x)[1]
+  } else if (is.numeric(std)) {
+    std = unique(x)[std]
+  } else if (is.character(std)) {
+    stopifnot(std %in% x)
+  }
+  
+  # calculate p-value betweem all x-variable groups and standard
   pval <- tapply(y, x, function(z) t.test(z, y[x == std])$p.value)
   if (verbose) {
     cat("p-value for comparison of ", std, " with ", 
@@ -213,16 +225,16 @@ panel.quadrants <- function (x, y, h = NULL, v = NULL,
   
   # plot percentages of the 4 quadrants as text
   quadrant <- list(
-    Q1 = {x < v & y > h} %>% sum,
-    Q2 = {x > v & y > h} %>% sum,
-    Q3 = {x > v & y < h} %>% sum,
-    Q4 = {x < v & y < h} %>% sum
+    Q1 = sum({x < v & y > h}),
+    Q2 = sum({x > v & y > h}),
+    Q3 = sum({x > v & y < h}),
+    Q4 = sum({x < v & y < h})
   )
   
   # can either plot events or percentage, or no labels
   if (labels == "percent") {
     quadrant = sapply(quadrant, function(i) {
-      round(i/length(x)*100, 1) %>% paste0("%")
+      paste0(round(i/length(x)*100, 1), "%")
     })
   } else if (labels == "events") {
     quadrant = paste0("n=", quadrant)
