@@ -11,7 +11,8 @@
 #'   of unique x values.
 #' @param std (character, numeric) the value of x that is used as standard. If NULL, the 
 #'   first value is used as standard. If a numeric scalar i, std is determined 
-#'   as the i'th element of unique(x)
+#'   as the i'th element of unique(x). If character, it must be one of x. If 
+#'   std = 'all_values', each unique group of x is compared to the total population
 #' @param symbol (logical) if '*' symbols are to be drawn for significance
 #' @param cex.symbol (numeric) character size of the symbol
 #' @param offset (numeric) offset added to the the vertical position of the p-value
@@ -23,7 +24,7 @@
 #' @export
 # ------------------------------------------------------------------------------
 panel.pvalue <- function(x, y, std = NULL, symbol = TRUE, cex.symbol = 1.5, offset = 1, 
-  fixed.pos = NULL, verbose = TRUE, 
+  fixed.pos = NULL, verbose = FALSE, 
   col = trellis.par.get()$superpose.polygon$col[1], ...
   ) 
 { 
@@ -32,11 +33,13 @@ panel.pvalue <- function(x, y, std = NULL, symbol = TRUE, cex.symbol = 1.5, offs
     std = unique(x)[1]
   } else if (is.numeric(std)) {
     std = unique(x)[std]
+  } else if (std == "all_values") {
+    std = x
   } else if (is.character(std)) {
     stopifnot(std %in% x)
   }
   
-  # calculate p-value betweem all x-variable groups and standard
+  # calculate p-value between all x-variable groups and standard
   pval <- tapply(y, x, function(z) t.test(z, y[x == std])$p.value)
   if (verbose) {
     cat("p-value for comparison of ", std, " with ", 
